@@ -12,6 +12,21 @@ export default function Home() {
     if (!pokemon) fetchPokemon(1);
   }, [fetchPokemon, pokemon]);
 
+  useEffect(() => {
+    const handleEvent = async (event: { detail: { id: number } }) => {
+      const { id } = event.detail;
+      fetchPokemon(id);
+    };
+
+    //@ts-ignore
+    window.addEventListener("changePokemon1", handleEvent);
+
+    return () => {
+      //@ts-ignore
+      window.removeEventListener("changePokemon1", handleEvent);
+    };
+  }, []);
+
   if (!pokemon)
     return (
       <div className="flex items-center justify-center min-h-screen p-5 bg-gray-100 min-w-screen">
